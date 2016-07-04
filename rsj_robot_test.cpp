@@ -145,7 +145,16 @@ public:
             float mynum = distanceSide - verticalRight;
             float margin = 0.0;
 
-            angularVel = factorAngularVel*(margin+mynum);
+            //angularVel = factorAngularVel*(margin+mynum);
+
+            if (mynum < margin)
+            {
+                angularVel = -0.1;
+            }
+            else
+            {
+                angularVel = 0.1;
+            }
 
 
             if (urgFront != 0.0)//センサーが始まってから動き出す
