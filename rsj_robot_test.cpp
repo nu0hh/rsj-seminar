@@ -116,18 +116,17 @@ public:
 		float minDistance = 10;
 		int minAngle;
 		
-            for (int i = ifront-100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
+            for (int i = ifront - 100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
             {
-                float myDistance = isens.ranges[i];//
-                if ((myDistance < isens.range_min)|| // エラー値の場合
-                    (myDistance > isens.range_max)|| // 測定範囲外の場合
-                    (std::isnan(myDistance)))       // 無限遠の場合
+                if ((isens.ranges[i] < isens.range_min)|| // エラー値の場合
+                    (isens.ranges[i] > isens.range_max)|| // 測定範囲外の場合
+                    (std::isnan(isens.ranges[i])))       // 無限遠の場合
                 {}
                 else
                 {
-                    if(myDistance < minDistance)
+                    if(isens.ranges[i] < minDistance)
                     {
-                        minDistance = myDistance;
+                        minDistance = isens.ranges[i];
                         minAngle = i;
                     }
                 }
@@ -135,9 +134,9 @@ public:
 
         int diff = ifront - minAngle;
         if (diff > 0)
-		{
+	{
             angularVel = -0.5;
-		}
+	}
         else if (diff < 0)
         {
             angularVel  = 0.5;
