@@ -104,10 +104,10 @@ public:
             geometry_msgs::Twist cmd_vel;
 
             //壁に一番近い距離
-		float minDistance = 10;
-		int minAngle;
-		
-            for (int i = ifront-100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
+	    float minDistance = 10;
+	    int minAngle;
+
+            for (int i = iright; i <= ileft; i++)//ここをなんか計算入れるとおかしくなっていたみたい
             {
                 float myDistance = isens.ranges[i];
                 if ((myDistance < isens.range_min)|| // エラー値の場合
@@ -147,7 +147,6 @@ public:
                 ROS_INFO("----------------------------------");
                 ROS_INFO("linear.x = %0.2f, angular.z = %0.2f", odom.twist.twist.linear.x, odom.twist.twist.angular.z);
                 ROS_INFO("poxition.x = %0.2f, rad = %0.2f, (angle = %0.2f)",odom.pose.pose.position.x, tf::getYaw(odom.pose.pose.orientation), tf::getYaw(odom.pose.pose.orientation)*180/M_PI);
-                ROS_INFO("right= %0.2f", urgRight);
 
                 cmd_vel.linear.x = linearVel;
                 cmd_vel.angular.z = angularVel;
