@@ -97,19 +97,10 @@ public:
     {
         ROS_INFO("Hello ROS World!");
 
-        // 指定した壁からの距離(distanceSide)からのズレから角速度を計算する際の係数 [rad/s/m]
-        float factorAngularVel = 0.5;
-
-        //start time
-        ros::Time start = ros::Time::now();
-
         ros::Rate rate(10.0);
         while(ros::ok())
         {
             ros::spinOnce();
-            //passed time
-            ros::Time now = ros::Time::now();
-
             geometry_msgs::Twist cmd_vel;
 
             //壁に一番近い距離
@@ -118,7 +109,7 @@ public:
 		
             for (int i = ifront-100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
             {
-                float myDistance = isens.ranges[i];//
+                float myDistance = isens.ranges[i];
                 if ((myDistance < isens.range_min)|| // エラー値の場合
                     (myDistance > isens.range_max)|| // 測定範囲外の場合
                     (std::isnan(myDistance)))       // 無限遠の場合
