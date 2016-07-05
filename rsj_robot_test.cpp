@@ -118,6 +118,7 @@ public:
 		
             for (int i = ifront - 100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
             {
+<<<<<<< HEAD
                 if ((isens.ranges[i] < isens.range_min)|| // エラー値の場合
                     (isens.ranges[i] > isens.range_max)|| // 測定範囲外の場合
                     (std::isnan(isens.ranges[i])))       // 無限遠の場合
@@ -127,6 +128,18 @@ public:
                     if(isens.ranges[i] < minDistance)
                     {
                         minDistance = isens.ranges[i];
+=======
+                float Distance = isens.ranges[i];//
+                if ((Distance < isens.range_min)|| // エラー値の場合
+                    (Distance > isens.range_max)|| // 測定範囲外の場合
+                    (std::isnan(Distance)))       // 無限遠の場合
+                {}
+                else
+                {
+                    if(Distance < minDistance)
+                    {
+                        minDistance = Distance;
+>>>>>>> parent of 1c17ea1... 7/5疲れて中断
                         minAngle = i;
                     }
                 }
