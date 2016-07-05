@@ -17,6 +17,7 @@ private:
     // 壁との距離 [m]
     const float distanceSide = 0.5;
     const float LARGE_VALUE = 99999.;
+
     //angularvel
     float angularVel = 0.0;
     float linearVel = 0.0;
@@ -112,41 +113,42 @@ public:
             geometry_msgs::Twist cmd_vel;
 
             //壁に一番近い距離
-            float verticalRight = 10;
-
-            for (int i = 45; i <= ifront; i++)//真横の距離を保存
+		float minDistance = 10;
+		int minAngle;
+		
+            for (int i = ifront-100; i < ifront + 100; i++)//前方何度かを断続的にスキャン
             {
-                float myRight = isens.ranges[i];//rightversion
-                if ((myRight < isens.range_min)|| // エラー値の場合
-                    (myRight > isens.range_max)|| // 測定範囲外の場合
-                    (std::isnan(myRight)))       // 無限遠の場合
+                float Distance = isens.ranges[i];//
+                if ((Distance < isens.range_min)|| // エラー値の場合
+                    (Distance > isens.range_max)|| // 測定範囲外の場合
+                    (std::isnan(Distance)))       // 無限遠の場合
                 {}
                 else
                 {
-                    if(myRight < verticalRight)
+                    if(Distance < minDistance)
                     {
-                        verticalRight = myRight;
+                        minDistance = Distance;
+                        minAngle = i;
                     }
                 }
             }
 
-            float mynum = distanceSide - verticalRight;
-            float margin = 0.1;
-
-            //angularVel = factorAngularVel*(margin+mynum);
-
-            if (mynum < margin)
-            {
-                angularVel = -0.1;
-            }
-            else if (mynum > margin)
-            {
-                angularVel = 0.1;
-            }
-		else
+        int diff = ifront - minAngle;
+        if (diff > 0)
 		{
-			angularVel = 0.0;
+            angularVel = -0.5;
 		}
+        else if (diff < 0)
+        {
+            angularVel  = 0.5;
+        }
+        else
+        {
+            angularVel = 0.0;
+        }
+
+
+		linearVel = 0.0;
 
 
             if (urgFront != 0.0)//センサーが始まってから動き出す
@@ -154,10 +156,9 @@ public:
                 ROS_INFO("----------------------------------");
                 ROS_INFO("linear.x = %0.2f, angular.z = %0.2f", odom.twist.twist.linear.x, odom.twist.twist.angular.z);
                 ROS_INFO("poxition.x = %0.2f, rad = %0.2f, (angle = %0.2f)",odom.pose.pose.position.x, tf::getYaw(odom.pose.pose.orientation), tf::getYaw(odom.pose.pose.orientation)*180/M_PI);
-                ROS_INFO("right= %0.2f verticalRight = %2.2f", urgRight, verticalRight);
-                ROS_INFO("distance= %0.2f", mynum);
+                ROS_INFO("right= %0.2f", urgRight);
 
-                cmd_vel.linear.x = 0.3;
+                cmd_vel.linear.x = linearVel;
                 cmd_vel.angular.z = angularVel;
             }
 
