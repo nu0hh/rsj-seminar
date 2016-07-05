@@ -29,14 +29,11 @@ private:
 
     void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
     {
-//        ROS_INFO("positionX %f angularZ%f",
-//            msg->pose.pose.position.x, msg->pose.pose.position.z);
         odom = *msg;
     }
 
     void cb_scan(const sensor_msgs::LaserScan::ConstPtr &msg)
     {
-        //int iright,ifront, ileft;
         float dtheta;
         //dtheta = (msg->angle_max - msg->angle_min)/msg->ranges.size();
         dtheta = msg->angle_increment;
@@ -52,12 +49,9 @@ private:
             (urgFront > msg->range_max)|| // 測定範囲外の場合
             (std::isnan(urgFront)))       // 無限遠の場合
         {
-            //ROS_INFO("front-range: measurement error");
-            //urgFront = msg->range_max;
         }
         else
         {
-            //ROS_INFO("front-range: %0.3f",urgFront);
         }
         // side
         urgRight = msg->ranges[iright];//rightversion
@@ -65,24 +59,18 @@ private:
             (urgRight > msg->range_max)|| // 測定範囲外の場合
             (std::isnan(urgRight)))       // 無限遠の場合
         {
-            //ROS_INFO("right-range: measurement error");
-            //urgSide = msg->range_max;
         }
         else
         {
-            //ROS_INFO("side-range: %0.3f",urgSide);
         }
         urgLeft = msg->ranges[ileft];//leftversion
         if ((urgLeft < msg->range_min)|| // エラー値の場合
             (urgLeft > msg->range_max)|| // 測定範囲外の場合
             (std::isnan(urgLeft)))       // 無限遠の場合
         {
-            //ROS_INFO("left-range: measurement error");
-            //urgSide = msg->range_max;
         }
         else
         {
-            //ROS_INFO("side-range: %0.3f",urgSide);
         }
 
         //メッセージを保存
