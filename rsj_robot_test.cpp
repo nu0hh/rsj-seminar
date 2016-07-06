@@ -128,11 +128,11 @@ public:
 	int margin = 20;
         if (diff > margin)
 	{
-            angularVel = -0.5;
+            angularVel = -0.8;
 	}
         else if (diff < -margin)
         {
-            angularVel  = 0.5;
+            angularVel  = 0.8;
         }
         else
         {
