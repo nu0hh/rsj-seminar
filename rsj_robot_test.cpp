@@ -138,9 +138,24 @@ public:
         {
             angularVel = 0.0;
         }
+	
+	//ここからリニア関係の指定になります。
+	
+    float objDistance = 1.0;
+    float marginDistance = 0.4;
 
-
+    if (objDistance - minDistance > marginDistance)
+	{
+		linearVel = 0.5;
+	}
+    else if (objDistance - minDistance < -marginDistance)
+	{
+		linearVel = -0.5;
+	}
+	else
+	{
 		linearVel = 0.0;
+	}
 
 
             if (urgFront != 0.0)//センサーが始まってから動き出す
