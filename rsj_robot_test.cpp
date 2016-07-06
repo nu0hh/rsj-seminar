@@ -126,7 +126,7 @@ public:
 
         int diff = ifront - minAngle;
 	int margin = 20;
-        if (diff > margin)//明日はここから始めよう　マージンを入れる　そのあと　距離追跡を入れる
+        if (diff > margin)
 	{
             angularVel = -0.5;
 	}
@@ -141,16 +141,18 @@ public:
 	
 	//ここからリニア関係の指定になります。
 	
-    float objDistance = 1.0;
-    float marginDistance = 0.4;
+    float objDistance = 0.6;
+    float marginDistance = 0.15;
 
     if (objDistance - minDistance > marginDistance)
 	{
-		linearVel = 0.5;
+		linearVel = -0.5;
+		ROS_INFO("obj: %0.2f, min: %0.2f", objDistance, minDistance);
 	}
     else if (objDistance - minDistance < -marginDistance)
 	{
-		linearVel = -0.5;
+		linearVel = 0.5;
+		ROS_INFO("obj: %0.2f, min: %0.2f", objDistance, minDistance);
 	}
 	else
 	{
@@ -163,6 +165,7 @@ public:
                 ROS_INFO("----------------------------------");
                 ROS_INFO("linear.x = %0.2f, angular.z = %0.2f", odom.twist.twist.linear.x, odom.twist.twist.angular.z);
                 ROS_INFO("poxition.x = %0.2f, rad = %0.2f, (angle = %0.2f)",odom.pose.pose.position.x, tf::getYaw(odom.pose.pose.orientation), tf::getYaw(odom.pose.pose.orientation)*180/M_PI);
+		ROS_INFO("urgFront = %0.2f", urgFront);
 
                 cmd_vel.linear.x = linearVel;
                 cmd_vel.angular.z = angularVel;
