@@ -125,11 +125,12 @@ public:
             }
 
         int diff = ifront - minAngle;
-        if (diff > 0)
-		{
+	int margin = 20;
+        if (diff > margin)//明日はここから始めよう　マージンを入れる　そのあと　距離追跡を入れる
+	{
             angularVel = -0.5;
-		}
-        else if (diff < 0)
+	}
+        else if (diff < -margin)
         {
             angularVel  = 0.5;
         }
